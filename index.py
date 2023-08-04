@@ -1,15 +1,37 @@
 import pandas as pd
 import joblib
-
-data = [[90, 42, 43, 20.879744,	82.002744, 6.502985, 202]]
-
-# Create the pandas DataFrame
-df = pd.DataFrame(data, columns=['N', 'P', 'K', 'temperature', 'humidity', 'ph', 'rainfall'])
-
-print(df)
+import numpy as np
+from fastapi import FastAPI
+from pydantic import BaseModel
 
 
-def preprocess_and_model(df):
+app = FastAPI()
+
+
+# farm class
+class Soil(BaseModel):
+    N:float
+    P:float
+    K:float
+    temperature:float
+    humidity:float
+    ph:float
+    rainfall:float
+
+
+
+@app.post("/soil")
+def preprocess_and_model(data:Soil):
+    data = data.dict()
+    N = data["N"]
+    P = data["P"]
+    K = data["K"]
+    temperature = data["temperature"]
+    humidity = data["humidity"]
+    ph = data["ph"]
+    rainfall = data["rainfall"]
+    data = [[N, P, K, temperature, humidity, ph, rainfall]]
+    df = pd.DataFrame(data, columns=['N', 'P', 'K', 'temperature', 'humidity', 'ph', 'rainfall'])
     full_pipeline = joblib.load('02-05-2023_20-47-39_full_pipeline.pkl')
     xgb_clf = joblib.load('02-05-2023_20-47-39_xgb_clf.pkl')
 
@@ -22,7 +44,6 @@ def preprocess_and_model(df):
 
     print(target_value)
 
-    return target_value
+    return {"recommended": target_value[0]}
 
-preprocess_and_model(df)
 
