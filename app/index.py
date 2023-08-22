@@ -4,18 +4,15 @@ import numpy as np
 from fastapi import FastAPI
 from pydantic import BaseModel
 import os
-from dotenv import load_dotenv
-from supabase_py import create_client
+from mangum import Mangum
 
 
-
-load_dotenv()
 app = FastAPI()
 
 url = os.getenv("SUPABASE_URL")
 key = os.getenv("ANON")
 
-client = create_client(url, key)
+
 
 # farm class
 class Soil(BaseModel):
@@ -31,6 +28,7 @@ class Soil(BaseModel):
 
 @app.post("/soil")
 def preprocess_and_model(data:Soil):  
+    # checkLambda()
     N = data.N
     P = data.P
     K = data.K
@@ -53,8 +51,8 @@ def preprocess_and_model(data:Soil):
     target_value = target_encoder.inverse_transform(prediction)
 
     print(target_value)
-    print(client.rest_url)
+   
 
     return {"recommended": target_value[0]}
 
-
+handler = Mangum(app)
