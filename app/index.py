@@ -9,8 +9,6 @@ from mangum import Mangum
 
 app = FastAPI()
 
-url = os.getenv("SUPABASE_URL")
-key = os.getenv("ANON")
 
 
 
@@ -38,15 +36,15 @@ def preprocess_and_model(data:Soil):
     rainfall = data.rainfall
     data = [[N, P, K, temperature, humidity, ph, rainfall]]
     df = pd.DataFrame(data, columns=['N', 'P', 'K', 'temperature', 'humidity', 'ph', 'rainfall'])
-    full_pipeline = joblib.load('saved_model/02-05-2023_20-47-39_full_pipeline.pkl')
-    xgb_clf = joblib.load('saved_model/02-05-2023_20-47-39_xgb_clf.pkl')
+    full_pipeline = joblib.load('/home/dennis/Desktop/projects/farmers/app/saved_model/02-05-2023_20-47-39_full_pipeline.pkl')
+    xgb_clf = joblib.load('/home/dennis/Desktop/projects/farmers/app/saved_model/02-05-2023_20-47-39_xgb_clf.pkl')
 
 
     prepared_data = full_pipeline.transform(df)
     prediction = xgb_clf.predict(prepared_data)
 
    
-    target_encoder = joblib.load('saved_model/02-05-2023_20-47-39_target_encoder.pkl')
+    target_encoder = joblib.load('/home/dennis/Desktop/projects/farmers/app/saved_model/02-05-2023_20-47-39_target_encoder.pkl')
 
     target_value = target_encoder.inverse_transform(prediction)
 
