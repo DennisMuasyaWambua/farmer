@@ -14,7 +14,7 @@ app = FastAPI()
 
 # farm class
 class Soil(BaseModel):
-    N:float
+    N:float 
     P:float
     K:float
     temperature:float
