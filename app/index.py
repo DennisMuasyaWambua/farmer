@@ -21,7 +21,9 @@ class Soil(BaseModel):
     humidity:float
     ph:float
     rainfall:float
-
+@app.get('/')
+def check():
+    return {"check":"working"}
 
 
 @app.post("/soil")
