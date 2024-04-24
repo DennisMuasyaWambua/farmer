@@ -4,7 +4,7 @@ import numpy as np
 from fastapi import FastAPI
 from pydantic import BaseModel
 import os
-from mangum import Mangum
+
 
 
 app = FastAPI()
