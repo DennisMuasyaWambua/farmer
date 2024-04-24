@@ -1,1 +1,1 @@
-web: uvicorn app.index:app --host=0.0.0.0
+web: uvicorn index:app --host=0.0.0.0
