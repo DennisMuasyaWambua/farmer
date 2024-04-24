@@ -53,4 +53,3 @@ def preprocess_and_model(data:Soil):
 
     return {"recommended": target_value[0]}
 
-handler = Mangum(app)
