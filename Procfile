@@ -1,1 +1,1 @@
-web: uvicorn index:app --host=0.0.0.0 --reload
+web: uvicorn index:farmers --host=0.0.0.0 --reload
